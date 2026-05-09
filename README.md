@@ -94,5 +94,5 @@ NumberConverter/
 
 ## License & Copyright
 
-**© 2026 saad khan. All rights reserved.**
-Developed by **saad khan**.
+**© 2026. All rights reserved.**
+Developed by **Saad khan**.
