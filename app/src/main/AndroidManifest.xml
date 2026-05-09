@@ -19,16 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".StepsActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-
-        <activity
-            android:name=".ReferenceActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-
     </application>
 
 </manifest>

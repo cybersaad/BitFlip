@@ -1,98 +1,87 @@
-# Number Base Converter — Android App
+# 📱 Number Base Converter
 
-A fully offline Android app built with **Kotlin + Jetpack Compose**.
-Converts between Decimal, Binary, Octal, and Hexadecimal with step-by-step working.
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
+![Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Offline](https://img.shields.io/badge/100%25-Offline-blue?style=for-the-badge)
 
----
-
-## Features
-- **Converter screen** — real-time conversion as you type, copy-to-clipboard
-- **Steps screen** — full step-by-step working (repeated division + remainder trace)
-- **Reference screen** — 0–15 quick lookup table + conversion method formulas
-- **About screen** — developer and app information
-- **100% offline** — no internet permission at all
-- **Dark AMOLED theme** — easy on the eyes
+A modern, fast, and completely offline Android application designed to convert numbers between different bases with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
 
 ---
 
-## Requirements
-- **Android Studio** Hedgehog (2023.1.1) or newer — download free from https://developer.android.com/studio
-- **JDK 17** (bundled with Android Studio)
-- **Android device or emulator** running Android 7.0+ (API 24+)
+## ✨ Features
+
+- **⚡ Real-time Conversion:** Instant results as you type. No "Convert" button required.
+- **📚 Detailed Steps:** Full mathematical working shown for every conversion (Repeated Division & Remainder).
+- **📋 One-Tap Copy:** Quickly copy results to your clipboard.
+- **📖 Quick Reference:** Built-in lookup table for Binary/Decimal/Hex equivalents (0-15).
+- **🌑 AMOLED Dark Theme:** Elegant, battery-friendly interface designed for modern screens.
+- **🔒 Privacy First:** 100% offline. No permissions required. No tracking. No ads.
 
 ---
 
-## How to Build & Run
+## 📥 Installation
 
-### Option A — Run on Android Emulator (easiest)
-1. Open **Android Studio**
-2. Choose **"Open"** and select this `NumberConverter` folder
-3. Wait for Gradle to sync (first time takes 2–5 minutes, downloads dependencies)
-4. Click **▶ Run** (green play button) or press `Shift+F10`
-5. Android Studio will create an emulator automatically if you don't have one
+### 🚀 Recommended (Direct Install)
+The fastest way to get the app on your phone:
 
-### Option B — Run on your real Android phone
-1. On your phone: go to **Settings → About Phone** → tap **Build Number** 7 times → enables Developer Options
-2. Go to **Settings → Developer Options** → enable **USB Debugging**
-3. Connect phone via USB cable
-4. In Android Studio: select your phone from the device dropdown → click **▶ Run**
-
-### Option C — Build an APK to share/install manually
-1. In Android Studio: **Build → Build Bundle(s) / APK(s) → Build APK(s)**
-2. APK will be at: `app/build/outputs/apk/debug/app-debug.apk`
-3. Copy APK to your phone and install (you may need to allow "Install from unknown sources" in Settings)
+1. **Download the APK:** [Click here to download the latest `.apk`](https://github.com/cybersaad/NumberConverter/releases/latest) (or go to the **Releases** section).
+2. **Open the file:** Tap the downloaded `.apk` file on your Android device.
+3. **Allow Installation:** If prompted, allow "Install from unknown sources" in your security settings.
+4. **Done!** You're ready to start converting.
 
 ---
 
-## Project Structure
-```
-NumberConverter/
-├── app/src/main/java/com/numberconverter/app/
-│   ├── MainActivity.kt          ← App entry point + bottom navigation
-│   ├── ConversionEngine.kt      ← All conversion logic (pure Kotlin)
-│   └── ui/
-│       ├── theme/
-│       │   └── Theme.kt         ← Colors, dark theme
-│       └── screens/
-│           ├── ConverterScreen.kt   ← Main converter tab
-│           ├── StepsScreen.kt       ← Step-by-step tab
-│           ├── ReferenceScreen.kt   ← Reference table tab
-│           └── AboutScreen.kt       ← Developer & app info
-├── app/build.gradle.kts         ← App dependencies
-├── build.gradle.kts             ← Root build file
-├── settings.gradle.kts          ← Project settings
-└── gradle/libs.versions.toml   ← Dependency versions
-```
+## 🛠️ Building from Source
+
+If you want to contribute or build the app yourself:
+
+### Prerequisites
+- **Android Studio** Ladybug (2024.2.1) or newer.
+- **JDK 17** or higher.
+- **Android SDK 35** installed.
+
+### Steps
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/cybersaad/NumberConverter.git
+   ```
+2. **Open in Android Studio:** Choose `Open` and select the project folder.
+3. **Sync Gradle:** Wait for the project to download all necessary dependencies.
+4. **Run:** Connect your device/emulator and click the **Run** button.
 
 ---
 
-## Tech Stack
-| | |
-|---|---|
-| Language | Kotlin |
-| UI | Jetpack Compose (Material3) |
-| Navigation | Navigation Compose |
-| Min Android | 7.0 (API 24) |
-| Target Android | 15 (API 35) |
-| Internet | ❌ None required |
+## 🏗️ Project Architecture
+
+The app follows a clean, modular structure for maintainability:
+
+- **`ConversionEngine.kt`**: Pure Kotlin logic for base conversions (reusable outside Android).
+- **`ui/screens/`**: UI components for Converter, Steps, Reference, and About screens.
+- **`ui/theme/`**: Theme definitions using Material3 design system.
+- **Compose Navigation**: Seamless transitions between different app sections.
 
 ---
 
-## Troubleshooting
+## 🛠️ Tech Stack
 
-**Gradle sync fails?**
-→ Make sure you have a working internet connection for the first sync (downloads libraries once)
-→ File → Invalidate Caches → Restart
-
-**"SDK not found" error?**
-→ Android Studio → Settings → Android SDK → Install SDK 35
-
-**Device not detected?**
-→ Try a different USB cable, or use the emulator instead
+| Component | Technology |
+| :--- | :--- |
+| **Language** | Kotlin 2.0+ |
+| **UI Framework** | Jetpack Compose (Material3) |
+| **Architecture** | MVVM (State-driven UI) |
+| **Min SDK** | API 24 (Android 7.0) |
+| **Target SDK** | API 35 (Android 15) |
 
 ---
 
-## License & Copyright
+## 🤝 Contribution
 
-**© 2026 saad khan. All rights reserved.**
-Developed by **saad khan**.
+Contributions are welcome! If you find a bug or have a feature request, please open an **Issue** or submit a **Pull Request**.
+
+---
+
+## 📄 License
+
+**© 2026 Saad Khan.** All rights reserved.
+Developed with ❤️ by [Saad Khan](https://github.com/cybersaad).
