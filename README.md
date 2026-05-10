@@ -12,7 +12,8 @@ A modern, fast, and completely offline Android application designed to convert n
 ## ✨ Features
 
 - **⚡ Real-time Conversion:** Instant results as you type. No "Convert" button required.
-- **📚 Detailed Steps:** Full mathematical working shown for every conversion (Repeated Division & Remainder).
+- **🔢 Fractional Number Support:** Full support for floating-point numbers (e.g., 12.625, A.8) across all bases.
+- **📚 Integrated Step-by-Step Working:** Full mathematical working shown automatically beneath your results (Repeated Division for integers, Multiplication for fractions).
 - **📋 One-Tap Copy:** Quickly copy results to your clipboard.
 - **📖 Quick Reference:** Built-in lookup table for Binary/Decimal/Hex equivalents (0-15).
 - **🌑 AMOLED Dark Theme:** Elegant, battery-friendly interface designed for modern screens.
@@ -57,7 +58,7 @@ If you want to contribute or build the app yourself:
 The app follows a clean, modular structure for maintainability:
 
 - **`ConversionEngine.kt`**: Pure Kotlin logic for base conversions (reusable outside Android).
-- **`ui/screens/`**: UI components for Converter, Steps, Reference, and About screens.
+- **`ui/screens/`**: UI components for Converter, Reference, and About screens.
 - **`ui/theme/`**: Theme definitions using Material3 design system.
 - **Compose Navigation**: Seamless transitions between different app sections.
 
