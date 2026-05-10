@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.ExpandLess
+import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.numberconverter.app.Base
 import com.numberconverter.app.ConversionEngine
 import com.numberconverter.app.ConversionResult
+import com.numberconverter.app.StepGroup
 import com.numberconverter.app.ui.theme.*
 
 @Composable
@@ -35,14 +38,21 @@ fun ConverterScreen() {
     var selectedBase by remember { mutableStateOf(Base.DECIMAL) }
     var input by remember { mutableStateOf("") }
     var result by remember { mutableStateOf<ConversionResult?>(null) }
+    var steps by remember { mutableStateOf<List<StepGroup>>(emptyList()) }
     var isError by remember { mutableStateOf(false) }
 
     LaunchedEffect(input, selectedBase) {
         if (input.isEmpty()) {
-            result = null; isError = false
+            result = null; steps = emptyList(); isError = false
         } else {
             isError = !ConversionEngine.isValid(input, selectedBase)
-            result = if (!isError) ConversionEngine.convert(input, selectedBase) else null
+            if (!isError) {
+                result = ConversionEngine.convert(input, selectedBase)
+                steps = ConversionEngine.buildSteps(input, selectedBase)
+            } else {
+                result = null
+                steps = emptyList()
+            }
         }
     }
 
@@ -75,6 +85,7 @@ fun ConverterScreen() {
             selectedBase = base
             input = ""
             result = null
+            steps = emptyList()
             isError = false
         }
 
@@ -94,6 +105,17 @@ fun ConverterScreen() {
         AnimatedVisibility(visible = result != null) {
             result?.let { res ->
                 ResultsSection(fromBase = selectedBase, result = res)
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        AnimatedVisibility(visible = steps.isNotEmpty()) {
+            Column {
+                steps.forEach { group ->
+                    StepGroupCard(group)
+                    Spacer(Modifier.height(12.dp))
+                }
             }
         }
     }
@@ -183,7 +205,11 @@ fun InputCard(base: Base, input: String, isError: Boolean, onInputChange: (Strin
                 isError = isError,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = if (base == Base.HEX) KeyboardType.Text else KeyboardType.Number,
+                    keyboardType = when (base) {
+                        Base.HEX -> KeyboardType.Text
+                        Base.DECIMAL -> KeyboardType.Decimal
+                        else -> KeyboardType.Text // BIN/OCT: Text keyboard allows dot. "Number" keyboard often hides the dot character entirely.
+                    },
                     capitalization = KeyboardCapitalization.Characters
                 ),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -291,6 +317,65 @@ fun ResultCard(base: Base, value: String, accent: Color) {
                     )
                 ) {
                     Icon(Icons.Outlined.ContentCopy, contentDescription = "Copy", modifier = Modifier.size(18.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun StepGroupCard(group: StepGroup) {
+    var expanded by remember(group.title) { mutableStateOf(true) }
+
+    Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = BgSurface,
+        border = BorderStroke(0.5.dp, BorderColor),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column {
+            // Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    group.title,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentPurple,
+                    letterSpacing = 0.3.sp,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                    contentDescription = null,
+                    tint = TextMuted,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+
+            AnimatedVisibility(visible = expanded) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(BgSurface2)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    group.lines.forEach { line ->
+                        Text(
+                            line.text,
+                            fontSize = 13.sp,
+                            fontFamily = FontFamily.Monospace,
+                            fontWeight = if (line.isResult) FontWeight.Bold else FontWeight.Normal,
+                            color = if (line.isResult) AccentGreen else TextMuted,
+                            lineHeight = 20.sp
+                        )
+                    }
                 }
             }
         }

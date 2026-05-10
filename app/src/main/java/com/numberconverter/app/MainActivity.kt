@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.automirrored.outlined.ListAlt
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.SwapHoriz
@@ -26,17 +25,15 @@ import androidx.navigation.compose.rememberNavController
 import com.numberconverter.app.ui.screens.AboutScreen
 import com.numberconverter.app.ui.screens.ConverterScreen
 import com.numberconverter.app.ui.screens.ReferenceScreen
-import com.numberconverter.app.ui.screens.StepsScreen
 import com.numberconverter.app.ui.theme.*
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
     object Converter  : Screen("converter",  "Converter", Icons.Outlined.SwapHoriz)
-    object Steps      : Screen("steps",      "Steps",     Icons.Outlined.Calculate)
     object Reference  : Screen("reference",  "Reference", Icons.AutoMirrored.Outlined.ListAlt)
     object About      : Screen("about",      "About",     Icons.Outlined.Info)
 }
 
-val bottomNavItems = listOf(Screen.Converter, Screen.Steps, Screen.Reference, Screen.About)
+val bottomNavItems = listOf(Screen.Converter, Screen.Reference, Screen.About)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +106,6 @@ fun NumberConverterApp() {
                     .padding(innerPadding)
             ) {
                 composable(Screen.Converter.route) { ConverterScreen() }
-                composable(Screen.Steps.route)     { StepsScreen() }
                 composable(Screen.Reference.route) { ReferenceScreen() }
                 composable(Screen.About.route)     { AboutScreen() }
             }
