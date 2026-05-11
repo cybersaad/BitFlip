@@ -1,11 +1,11 @@
-# 📱 Number Base Converter
+# 📱 BitFlip
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Offline](https://img.shields.io/badge/100%25-Offline-blue?style=for-the-badge)
 
-A modern, fast, and completely offline Android application designed to convert numbers between different bases with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
+BitFlip v2.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
 
 ---
 
@@ -26,7 +26,7 @@ A modern, fast, and completely offline Android application designed to convert n
 ### 🚀 Recommended (Direct Install)
 The fastest way to get the app on your phone:
 
-1. **Download the APK:** [Click here to download the latest `.apk`](https://github.com/cybersaad/NumberConverter/releases/latest) (or go to the **Releases** section).
+1. **Download the APK:** [Click here to download the latest `.apk`](https://github.com/cybersaad/BitFlip/releases/latest) (or go to the **Releases** section).
 2. **Open the file:** Tap the downloaded `.apk` file on your Android device.
 3. **Allow Installation:** If prompted, allow "Install from unknown sources" in your security settings.
 4. **Done!** You're ready to start converting.
@@ -45,7 +45,7 @@ If you want to contribute or build the app yourself:
 ### Steps
 1. **Clone the repo:**
    ```bash
-   git clone https://github.com/cybersaad/NumberConverter.git
+   git clone https://github.com/cybersaad/BitFlip.git
    ```
 2. **Open in Android Studio:** Choose `Open` and select the project folder.
 3. **Sync Gradle:** Wait for the project to download all necessary dependencies.
@@ -86,3 +86,4 @@ Contributions are welcome! If you find a bug or have a feature request, please o
 
 **© 2026 Saad Khan.** All rights reserved.
 Developed with ❤️ by [Saad Khan](https://github.com/cybersaad).
+

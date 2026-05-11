@@ -22,5 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NumberConverter"
+rootProject.name = "BitFlip"
 include(":app")
+

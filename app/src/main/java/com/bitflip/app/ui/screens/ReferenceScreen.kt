@@ -1,4 +1,4 @@
-package com.numberconverter.app.ui.screens
+package com.bitflip.app.ui.screens
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.numberconverter.app.ui.theme.*
+import com.bitflip.app.ui.theme.*
 
 data class RefRow(val dec: Int, val bin: String, val oct: String, val hex: String)
 

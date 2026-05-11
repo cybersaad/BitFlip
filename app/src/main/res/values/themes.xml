@@ -1,7 +1,8 @@
 <resources>
-    <style name="Theme.NumberConverter" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.BitFlip" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">#0D0E14</item>
         <item name="android:navigationBarColor">#0D0E14</item>
         <item name="android:windowBackground">#0D0E14</item>
     </style>
 </resources>
+

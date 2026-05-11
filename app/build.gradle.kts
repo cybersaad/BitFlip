@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.numberconverter.app"
+    namespace = "com.bitflip.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.numberconverter.app"
+        applicationId = "com.bitflip.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -63,3 +63,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+

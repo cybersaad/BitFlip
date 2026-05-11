@@ -1,4 +1,4 @@
-package com.numberconverter.app
+package com.bitflip.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,10 +22,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.numberconverter.app.ui.screens.AboutScreen
-import com.numberconverter.app.ui.screens.ConverterScreen
-import com.numberconverter.app.ui.screens.ReferenceScreen
-import com.numberconverter.app.ui.theme.*
+import com.bitflip.app.ui.screens.AboutScreen
+import com.bitflip.app.ui.screens.ConverterScreen
+import com.bitflip.app.ui.screens.ReferenceScreen
+import com.bitflip.app.ui.theme.*
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
     object Converter  : Screen("converter",  "Converter", Icons.Outlined.SwapHoriz)
@@ -40,20 +40,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NumberConverterApp()
+            BitFlipApp()
         }
     }
 }
 
 @Composable
-fun NumberConverterThemeWrapper(content: @Composable () -> Unit) {
-    com.numberconverter.app.ui.theme.NumberConverterTheme(content = content)
+fun BitFlipThemeWrapper(content: @Composable () -> Unit) {
+    com.bitflip.app.ui.theme.BitFlipTheme(content = content)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NumberConverterApp() {
-    NumberConverterThemeWrapper {
+fun BitFlipApp() {
+    BitFlipThemeWrapper {
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDest = navBackStackEntry?.destination
@@ -112,3 +112,4 @@ fun NumberConverterApp() {
         }
     }
 }
+

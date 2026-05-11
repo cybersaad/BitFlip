@@ -1,4 +1,4 @@
-package com.numberconverter.app.ui.screens
+package com.bitflip.app.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,13 +24,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.numberconverter.app.R
-import com.numberconverter.app.ui.theme.AccentBlue
-import com.numberconverter.app.ui.theme.BgPrimary
-import com.numberconverter.app.ui.theme.BgSurface
-import com.numberconverter.app.ui.theme.BorderColor
-import com.numberconverter.app.ui.theme.TextMuted
-import com.numberconverter.app.ui.theme.TextPrimary
+import com.bitflip.app.R
+import com.bitflip.app.ui.theme.AccentBlue
+import com.bitflip.app.ui.theme.BgPrimary
+import com.bitflip.app.ui.theme.BgSurface
+import com.bitflip.app.ui.theme.BorderColor
+import com.bitflip.app.ui.theme.TextMuted
+import com.bitflip.app.ui.theme.TextPrimary
 
 @Composable
 fun AboutScreen() {
@@ -58,7 +58,7 @@ fun AboutScreen() {
         
         // App Title
         Text(
-            text = "Number Base Converter",
+            text = "BitFlip",
             color = TextPrimary,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
@@ -68,7 +68,7 @@ fun AboutScreen() {
         
         // App Description
         Text(
-            text = "Fast and accurate base conversions\n(Binary, Decimal, Octal, Hex)",
+            text = "Fast and accurate base conversions v2.0\n(Binary, Decimal, Octal, Hex)",
             color = TextMuted,
             fontSize = 14.sp,
             textAlign = TextAlign.Center,

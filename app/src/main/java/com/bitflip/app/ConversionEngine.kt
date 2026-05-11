@@ -1,4 +1,8 @@
-package com.numberconverter.app
+package com.bitflip.app
+
+import java.math.BigDecimal
+import java.math.BigInteger
+import java.math.RoundingMode
 
 /**
  * All number-base conversion logic — pure Kotlin, no Android dependencies.
@@ -32,10 +36,10 @@ data class StepLine(
 object ConversionEngine {
 
     private val validators = mapOf(
-        Base.DECIMAL to Regex("^[0-9]+(\\.[0-9]+)?$"),
-        Base.BINARY  to Regex("^[01]+(\\.[01]+)?$"),
-        Base.OCTAL   to Regex("^[0-7]+(\\.[0-7]+)?$"),
-        Base.HEX     to Regex("^[0-9a-fA-F]+(\\.[0-9a-fA-F]+)?$")
+        Base.DECIMAL to Regex("^([0-9]*\\.[0-9]+|[0-9]+\\.?)$"),
+        Base.BINARY  to Regex("^([01]*\\.[01]+|[01]+\\.?)$"),
+        Base.OCTAL   to Regex("^([0-7]*\\.[0-7]+|[0-7]+\\.?)$"),
+        Base.HEX     to Regex("^([0-9a-fA-F]*\\.[0-9a-fA-F]+|[0-9a-fA-F]+\\.?)$")
     )
 
     fun isValid(input: String, base: Base): Boolean =
@@ -48,21 +52,21 @@ object ConversionEngine {
             val intPartStr = parts[0]
             val fracPartStr = if (parts.size > 1) parts[1] else ""
 
-            var decInt = 0L
+            var decInt = BigInteger.ZERO
             if (intPartStr.isNotEmpty()) {
-                decInt = intPartStr.toLong(fromBase.radix)
+                decInt = BigInteger(intPartStr, fromBase.radix)
             }
 
-            var decFrac = 0.0
+            var decFrac = BigDecimal.ZERO
             if (fracPartStr.isNotEmpty()) {
                 if (fromBase == Base.DECIMAL) {
-                    decFrac = ("0.$fracPartStr").toDouble()
+                    decFrac = BigDecimal("0.$fracPartStr")
                 } else {
-                    var factor = 1.0 / fromBase.radix
-                    for (char in fracPartStr) {
-                        val digit = char.digitToInt(fromBase.radix)
-                        decFrac += digit * factor
-                        factor /= fromBase.radix
+                    for ((i, char) in fracPartStr.withIndex()) {
+                        val digit = BigDecimal(char.digitToInt(fromBase.radix))
+                        val divisor = BigDecimal(fromBase.radix).pow(i + 1)
+                        val term = digit.divide(divisor, 20, RoundingMode.HALF_UP)
+                        decFrac = decFrac.add(term)
                     }
                 }
             }
@@ -78,18 +82,16 @@ object ConversionEngine {
         }
     }
 
-    private fun formatDecimalResult(intPart: Long, fracPart: Double): String {
-        if (fracPart == 0.0) return intPart.toString()
-        val formatted = String.format(java.util.Locale.US, "%.6f", fracPart)
-        var fracStr = formatted.substringAfter(".")
-        fracStr = fracStr.trimEnd('0')
+    private fun formatDecimalResult(intPart: BigInteger, fracPart: BigDecimal): String {
+        if (fracPart.compareTo(BigDecimal.ZERO) == 0) return intPart.toString()
+        val fracStr = fracPart.stripTrailingZeros().toPlainString().substringAfter(".", "")
         if (fracStr.isEmpty()) return intPart.toString()
         return "$intPart.$fracStr"
     }
 
-    private fun convertToTarget(decInt: Long, decFrac: Double, targetBase: Base): String {
+    private fun convertToTarget(decInt: BigInteger, decFrac: BigDecimal, targetBase: Base): String {
         val intStr = decInt.toString(targetBase.radix).uppercase()
-        if (decFrac == 0.0) return intStr
+        if (decFrac.compareTo(BigDecimal.ZERO) == 0) return intStr
 
         val maxLen = when (targetBase) {
             Base.BINARY -> 8
@@ -101,16 +103,18 @@ object ConversionEngine {
         var currentFrac = decFrac
         val fracDigits = StringBuilder()
         var isApprox = false
+        val radixBD = BigDecimal(targetBase.radix)
+        val tolerance = BigDecimal("1e-9")
 
         for (i in 0 until maxLen) {
-            currentFrac *= targetBase.radix
-            val d = currentFrac.toLong()
+            currentFrac = currentFrac.multiply(radixBD)
+            val d = currentFrac.toBigInteger()
             fracDigits.append(d.toString(targetBase.radix).uppercase())
-            currentFrac -= d
-            if (currentFrac < 1e-9) break
+            currentFrac = currentFrac.subtract(BigDecimal(d))
+            if (currentFrac.compareTo(tolerance) < 0) break
         }
 
-        if (currentFrac >= 1e-9) {
+        if (currentFrac.compareTo(tolerance) >= 0) {
             isApprox = true
         }
 
@@ -118,10 +122,12 @@ object ConversionEngine {
         return "$approxPrefix$intStr.${fracDigits}"
     }
 
-    private fun formatStepDouble(d: Double): String {
-        if (d == 0.0) return "0.0"
-        var s = String.format(java.util.Locale.US, "%.6f", d).trimEnd('0')
-        if (s.endsWith(".")) s += "0"
+    private fun formatStepDouble(d: BigDecimal): String {
+        if (d.compareTo(BigDecimal.ZERO) == 0) return "0.0"
+        var s = d.stripTrailingZeros().toPlainString()
+        if (!s.contains(".")) {
+             s += ".0"
+        }
         return s
     }
 
@@ -141,21 +147,21 @@ object ConversionEngine {
         val fracPartStr = if (parts.size > 1) parts[1] else ""
 
         val groups = mutableListOf<StepGroup>()
-        var decInt = 0L
-        var decFrac = 0.0
+        var decInt = BigInteger.ZERO
+        var decFrac = BigDecimal.ZERO
 
         if (intPartStr.isNotEmpty()) {
-            decInt = intPartStr.toLong(fromBase.radix)
+            decInt = BigInteger(intPartStr, fromBase.radix)
         }
         if (fracPartStr.isNotEmpty()) {
             if (fromBase == Base.DECIMAL) {
-                decFrac = ("0.$fracPartStr").toDouble()
+                decFrac = BigDecimal("0.$fracPartStr")
             } else {
-                var factor = 1.0 / fromBase.radix
-                for (char in fracPartStr) {
-                    val digit = char.digitToInt(fromBase.radix)
-                    decFrac += digit * factor
-                    factor /= fromBase.radix
+                for ((i, char) in fracPartStr.withIndex()) {
+                    val digit = BigDecimal(char.digitToInt(fromBase.radix))
+                    val divisor = BigDecimal(fromBase.radix).pow(i + 1)
+                    val term = digit.divide(divisor, 20, RoundingMode.HALF_UP)
+                    decFrac = decFrac.add(term)
                 }
             }
         }
@@ -169,15 +175,15 @@ object ConversionEngine {
                 val digits = intPartStr.reversed()
                 when (fromBase) {
                     Base.BINARY -> digits.forEachIndexed { i, c ->
-                        val v = c.digitToInt() * Math.pow(2.0, i.toDouble()).toLong()
+                        val v = BigInteger(c.digitToInt().toString()).multiply(BigInteger("2").pow(i))
                         lines += StepLine("$c × 2^$i  =  $v")
                     }
                     Base.OCTAL -> digits.forEachIndexed { i, c ->
-                        val v = c.digitToInt() * Math.pow(8.0, i.toDouble()).toLong()
+                        val v = BigInteger(c.digitToInt().toString()).multiply(BigInteger("8").pow(i))
                         lines += StepLine("$c × 8^$i  =  $v")
                     }
                     Base.HEX -> digits.forEachIndexed { i, c ->
-                        val v = c.digitToInt(16) * Math.pow(16.0, i.toDouble()).toLong()
+                        val v = BigInteger(c.digitToInt(16).toString()).multiply(BigInteger("16").pow(i))
                         lines += StepLine("$c (= ${c.digitToInt(16)}) × 16^$i  =  $v")
                     }
                     else -> {}
@@ -196,17 +202,17 @@ object ConversionEngine {
                 when (fromBase) {
                     Base.BINARY -> fracPartStr.forEachIndexed { i, c ->
                         val p = i + 1
-                        val v = c.digitToInt() * Math.pow(2.0, -p.toDouble())
+                        val v = BigDecimal(c.digitToInt()).divide(BigDecimal("2").pow(p), 20, RoundingMode.HALF_UP)
                         lines += StepLine("$c × 2${superscript(-p)}  =  ${formatStepDouble(v)}")
                     }
                     Base.OCTAL -> fracPartStr.forEachIndexed { i, c ->
                         val p = i + 1
-                        val v = c.digitToInt() * Math.pow(8.0, -p.toDouble())
+                        val v = BigDecimal(c.digitToInt()).divide(BigDecimal("8").pow(p), 20, RoundingMode.HALF_UP)
                         lines += StepLine("$c × 8${superscript(-p)}  =  ${formatStepDouble(v)}")
                     }
                     Base.HEX -> fracPartStr.forEachIndexed { i, c ->
                         val p = i + 1
-                        val v = c.digitToInt(16) * Math.pow(16.0, -p.toDouble())
+                        val v = BigDecimal(c.digitToInt(16)).divide(BigDecimal("16").pow(p), 20, RoundingMode.HALF_UP)
                         lines += StepLine("$c (= ${c.digitToInt(16)}) × 16${superscript(-p)}  =  ${formatStepDouble(v)}")
                     }
                     else -> {}
@@ -234,27 +240,28 @@ object ConversionEngine {
         return groups
     }
 
-    private fun buildTargetSteps(decInt: Long, decFrac: Double, target: Base): StepGroup {
+    private fun buildTargetSteps(decInt: BigInteger, decFrac: BigDecimal, target: Base): StepGroup {
         val lines = mutableListOf<StepLine>()
         val remainders = mutableListOf<String>()
         var n = decInt
+        val radixBI = BigInteger.valueOf(target.radix.toLong())
         
-        if (n == 0L) {
+        if (n == BigInteger.ZERO) {
             lines += StepLine("Integer result  =  0")
         } else {
-            while (n > 0) {
-                val rem = n % target.radix
+            while (n > BigInteger.ZERO) {
+                val rem = n.remainder(radixBI)
                 val remStr = rem.toString(target.radix).uppercase()
-                lines += StepLine("$n ÷ ${target.radix}  =  ${n / target.radix}   remainder $remStr")
+                lines += StepLine("$n ÷ ${target.radix}  =  ${n.divide(radixBI)}   remainder $remStr")
                 remainders += remStr
-                n /= target.radix
+                n = n.divide(radixBI)
             }
             lines += StepLine("Integer result (read bottom-up)  →  ${remainders.reversed().joinToString("")}")
         }
         
-        val intResultStr = if (decInt == 0L) "0" else remainders.reversed().joinToString("")
+        val intResultStr = if (decInt == BigInteger.ZERO) "0" else remainders.reversed().joinToString("")
         
-        if (decFrac > 0.0) {
+        if (decFrac > BigDecimal.ZERO) {
             lines += StepLine("")
             
             val maxLen = when (target) {
@@ -266,16 +273,19 @@ object ConversionEngine {
             
             var currentFrac = decFrac
             val fracDigits = StringBuilder()
+            val radixBD = BigDecimal(target.radix)
+            val tolerance = BigDecimal("1e-9")
+
             for (i in 0 until maxLen) {
-                val mult = currentFrac * target.radix
-                val d = mult.toLong()
+                val mult = currentFrac.multiply(radixBD)
+                val d = mult.toBigInteger()
                 val dStr = d.toString(target.radix).uppercase()
                 
                 lines += StepLine("${formatStepDouble(currentFrac)} × ${target.radix}  =  ${formatStepDouble(mult)}  → integer digit: $dStr")
                 
                 fracDigits.append(dStr)
-                currentFrac = mult - d
-                if (currentFrac < 1e-9) break
+                currentFrac = mult.subtract(BigDecimal(d))
+                if (currentFrac.compareTo(tolerance) < 0) break
             }
             
             lines += StepLine("Fractional result (read top-down)  →  .$fracDigits")

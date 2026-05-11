@@ -1,4 +1,4 @@
-package com.numberconverter.app.ui.screens
+package com.bitflip.app.ui.screens
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -27,11 +27,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.numberconverter.app.Base
-import com.numberconverter.app.ConversionEngine
-import com.numberconverter.app.ConversionResult
-import com.numberconverter.app.StepGroup
-import com.numberconverter.app.ui.theme.*
+import com.bitflip.app.Base
+import com.bitflip.app.ConversionEngine
+import com.bitflip.app.ConversionResult
+import com.bitflip.app.StepGroup
+import com.bitflip.app.ui.theme.*
 
 @Composable
 fun ConverterScreen() {
@@ -67,7 +67,7 @@ fun ConverterScreen() {
 
         // Header
         Text(
-            "Number Converter",
+            "BitFlip",
             fontSize = 26.sp,
             fontWeight = FontWeight.ExtraBold,
             color = AccentBlue,
@@ -208,7 +208,8 @@ fun InputCard(base: Base, input: String, isError: Boolean, onInputChange: (Strin
                     keyboardType = when (base) {
                         Base.HEX -> KeyboardType.Text
                         Base.DECIMAL -> KeyboardType.Decimal
-                        else -> KeyboardType.Text // BIN/OCT: Text keyboard allows dot. "Number" keyboard often hides the dot character entirely.
+                        Base.BINARY -> KeyboardType.Decimal
+                        Base.OCTAL -> KeyboardType.Decimal
                     },
                     capitalization = KeyboardCapitalization.Characters
                 ),

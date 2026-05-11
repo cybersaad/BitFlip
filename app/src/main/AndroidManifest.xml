@@ -7,7 +7,7 @@
         android:icon="@drawable/app_icon"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NumberConverter">
+        android:theme="@style/Theme.BitFlip">
 
         <activity
             android:name=".MainActivity"
@@ -22,3 +22,4 @@
     </application>
 
 </manifest>
+
