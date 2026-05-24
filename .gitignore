@@ -21,6 +21,7 @@ release/
 build/
 /app/build/
 
+
 # Local configuration file (sdk path, etc.)
 local.properties
 
@@ -37,6 +38,7 @@ local.properties
 .idea/deploymentTargetSelector.xml
 .idea/deviceManager.xml
 .idea/planningMode.xml
+.idea/gradle.xml
 
 # Keystore files (NEVER upload these)
 *.jks
