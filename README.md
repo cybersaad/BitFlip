@@ -1,36 +1,57 @@
-# 📱 BitFlip
+<p align="center">
+  <img 
+    width="220" 
+    height="220" 
+    alt="BitFlip Logo" 
+    src="https://github.com/user-attachments/assets/34d6d617-aa1d-43c4-8a69-acebd63398fd" 
+  />
+</p>
 
-![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
-![Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
-![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-![Offline](https://img.shields.io/badge/100%25-Offline-blue?style=for-the-badge)
+<h1 align="center">BitFlip</h1>
+
+<p align="center">
+  A modern offline Android app for number-system conversion and binary arithmetic
+</p>
+
+<div align="center">
+
+
+![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Language](https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
+![UI](https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
+![Release](https://img.shields.io/badge/Release-v3.0-161B22?style=for-the-badge&logo=github&logoColor=white)
+
 
 BitFlip v3.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases **and** perform binary arithmetic — all with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
 
+<img width="1080" height="2404" alt="Screenshot_20260524_131530 - Copy" src="https://github.com/user-attachments/assets/46956680-75c3-4214-bc3c-52bdcb704aae" />
+
+</div>
+
 ---
 
-## ✨ Features
+## Features
 
-### 🔢 Base Conversion
-- **⚡ Real-time Conversion:** Instant results as you type. No "Convert" button required.
-- **🔢 Fractional Number Support:** Full support for floating-point numbers (e.g., `12.625`, `A.8`) across all bases.
-- **📚 Integrated Step-by-Step Working:** Full mathematical working shown automatically beneath your results (Repeated Division for integers, Multiplication for fractions).
+### Base Conversion
+- **Real-time Conversion:** Instant results as you type. No "Convert" button required.
+- **Fractional Number Support:** Full support for floating-point numbers (e.g., `12.625`, `A.8`) across all bases.
+- **Integrated Step-by-Step Working:** Full mathematical working shown automatically beneath your results (Repeated Division for integers, Multiplication for fractions).
 
-### ➕ Binary Arithmetic *(New in v3.0)*
+### Binary Arithmetic *(New in v3.0)*
 - **Addition (+):** Binary addition with carry-chain walkthrough.
 - **Subtraction (−):** Binary subtraction with borrow-chain walkthrough, supporting negative results.
 - **Multiplication (×):** Binary multiplication with partial-product breakdown.
 - **Division (÷):** Binary long division showing quotient and remainder with aligned-subtraction steps.
-- **📚 Step-by-Step Working:** Every operation displays bit-level steps so you can learn the process.
+- **Step-by-Step Working:** Every operation displays bit-level steps so you can learn the process.
 
-### 🛠️ General
-- **📋 One-Tap Copy:** Quickly copy results to your clipboard.
-- **📖 Quick Reference:** Built-in lookup table for Binary/Decimal/Hex equivalents (0–15).
-- **🌑 AMOLED Dark Theme:** Elegant, battery-friendly interface designed for modern screens.
-- **🔄 Auto Update Check:** Notifies you when a new version is available on GitHub.
-- **🔒 Privacy First:** Core features work 100% offline. Internet is only used to check for updates. No tracking. No ads.
+### General
+- **One-Tap Copy:** Quickly copy results to your clipboard.
+- **Quick Reference:** Built-in lookup table for Binary/Decimal/Hex equivalents (0–15).
+- **AMOLED Dark Theme:** Elegant, battery-friendly interface designed for modern screens.
+- **Auto Update Check:** Notifies you when a new version is available on GitHub.
+- **Privacy First:** Core features work 100% offline. Internet is only used to check for updates. No tracking. No ads.
 
-### 📡 Permissions
+### Permissions
 
 | Permission | Required For | Note |
 | :--- | :--- | :--- |
@@ -38,9 +59,9 @@ BitFlip v3.0 is a modern, fast, and completely offline Android application desig
 
 ---
 
-## 📥 Installation
+## Installation
 
-### 🚀 Recommended (Direct Install)
+### Recommended (Direct Install)
 The fastest way to get the app on your phone:
 
 1. **Download the APK:** [Click here to download the latest `.apk`](https://github.com/cybersaad/BitFlip/releases/latest) (or go to the **Releases** section).
@@ -50,7 +71,7 @@ The fastest way to get the app on your phone:
 
 ---
 
-## 🛠️ Building from Source
+## Building from Source
 
 If you want to contribute or build the app yourself:
 
@@ -70,7 +91,7 @@ If you want to contribute or build the app yourself:
 
 ---
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 The app follows a clean, modular structure for maintainability:
 
@@ -97,7 +118,7 @@ com.bitflip.app/
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component | Technology |
 | :--- | :--- |
@@ -110,7 +131,7 @@ com.bitflip.app/
 
 ---
 
-## 📋 Version History
+## Version History
 
 | Version | Highlights |
 | :--- | :--- |
@@ -120,13 +141,13 @@ com.bitflip.app/
 
 ---
 
-## 🤝 Contribution
+## Contribution
 
 Contributions are welcome! If you find a bug or have a feature request, please open an **Issue** or submit a **Pull Request**.
 
 ---
 
-## 📄 License
+## License
 
 **© 2026 Saad Khan.** All rights reserved.
 Developed with ❤️ by [Saad Khan](https://github.com/cybersaad).
