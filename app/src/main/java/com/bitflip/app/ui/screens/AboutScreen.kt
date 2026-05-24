@@ -68,7 +68,7 @@ fun AboutScreen() {
         
         // App Description
         Text(
-            text = "Fast and accurate base conversions v2.0\n(Binary, Decimal, Octal, Hex)",
+            text = "Base conversions & binary arithmetic v3.0\n(Binary, Decimal, Octal, Hex)",
             color = TextMuted,
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
@@ -153,7 +153,7 @@ fun AboutScreen() {
         
         // Version and Copyright
         Text(
-            text = "Version 1.0",
+            text = "Version 3.0",
             color = TextPrimary,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium

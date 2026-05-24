@@ -229,9 +229,9 @@ object ConversionEngine {
         }
 
         // Steps: decimal → each other base
-        val targets = Base.values().filter { it != fromBase && it != Base.DECIMAL }
+        val targets = Base.entries.filter { it != fromBase && it != Base.DECIMAL }
         val all = if (fromBase == Base.DECIMAL)
-            Base.values().filter { it != Base.DECIMAL }
+            Base.entries.filter { it != Base.DECIMAL }
         else targets
 
         all.forEach { target ->

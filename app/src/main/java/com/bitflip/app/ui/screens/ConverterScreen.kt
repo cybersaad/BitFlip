@@ -127,7 +127,7 @@ fun BaseSelector(selected: Base, onSelect: (Base) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Base.values().forEach { base ->
+        Base.entries.forEach { base ->
             val isSelected = base == selected
             Box(
                 modifier = Modifier
