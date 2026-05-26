@@ -19,10 +19,10 @@
 ![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Language](https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![UI](https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
-![Release](https://img.shields.io/badge/Release-v3.0-161B22?style=for-the-badge&logo=github&logoColor=white)
+![Release](https://img.shields.io/badge/Release-v4.0-161B22?style=for-the-badge&logo=github&logoColor=white)
 
 
-BitFlip v3.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases **and** perform binary arithmetic — all with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
+BitFlip v4.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases, perform binary arithmetic, and solve complex math equations with a full scientific calculator — all with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
 
 <img width="300" height="590" alt="Screenshot_20260524_131530 - Copy" src="https://github.com/user-attachments/assets/46956680-75c3-4214-bc3c-52bdcb704aae" />
 
@@ -37,14 +37,20 @@ BitFlip v3.0 is a modern, fast, and completely offline Android application desig
 - **Fractional Number Support:** Full support for floating-point numbers (e.g., `12.625`, `A.8`) across all bases.
 - **Integrated Step-by-Step Working:** Full mathematical working shown automatically beneath your results (Repeated Division for integers, Multiplication for fractions).
 
-### Binary Arithmetic *(New in v3.0)*
+### Binary Arithmetic
 - **Addition (+):** Binary addition with carry-chain walkthrough.
 - **Subtraction (−):** Binary subtraction with borrow-chain walkthrough, supporting negative results.
 - **Multiplication (×):** Binary multiplication with partial-product breakdown.
 - **Division (÷):** Binary long division showing quotient and remainder with aligned-subtraction steps.
 - **Step-by-Step Working:** Every operation displays bit-level steps so you can learn the process.
 
+### Scientific Calculator *(New in v4.0)*
+- **Advanced Math:** Perform complex equations with `sin`, `cos`, `tan`, `log`, `ln`, `√`, powers, and absolute values.
+- **Degrees & Radians:** Switch seamlessly between DEG and RAD modes.
+- **Smart Formatting:** Instant error detection and clean mathematical result formatting.
+
 ### General
+- **Persistent History:** Automatically tracks and categorizes your conversions and calculations so you never lose your work.
 - **One-Tap Copy:** Quickly copy results to your clipboard.
 - **Quick Reference:** Built-in lookup table for Binary/Decimal/Hex equivalents (0–15).
 - **AMOLED Dark Theme:** Elegant, battery-friendly interface designed for modern screens.
@@ -97,17 +103,22 @@ The app follows a clean, modular structure for maintainability:
 
 ```
 com.bitflip.app/
-├── ConversionEngine.kt       # Pure Kotlin logic for base conversions (reusable, no Android deps)
-├── UpdateChecker.kt          # GitHub Releases version checker (auto-update notifications)
+├── ConversionEngine.kt       # Pure Kotlin logic for base conversions
+├── CalculatorEngine.kt       # Engine for the scientific calculator expression parsing
+├── HistoryManager.kt         # Local SharedPreferences persistence for activity tracking
+├── UpdateChecker.kt          # GitHub Releases version checker
 ├── MainActivity.kt           # App entry point, bottom navigation & screen routing
 └── ui/
     ├── screens/
-    │   ├── ConverterScreen.kt    # Base conversion UI (DEC/BIN/OCT/HEX)
-    │   ├── ArithmeticScreen.kt   # Binary arithmetic UI (+, −, ×, ÷)
-    │   ├── ReferenceScreen.kt    # Quick-reference lookup table (0–15)
-    │   └── AboutScreen.kt        # Developer info & app version
+    │   ├── DashboardScreen.kt          # Main hub with categorized tools
+    │   ├── ScientificCalculatorScreen.kt # Scientific Calculator UI
+    │   ├── ConverterScreen.kt          # Base conversion UI
+    │   ├── ArithmeticScreen.kt         # Binary arithmetic UI
+    │   ├── HistoryScreen.kt            # Categorized activity history UI
+    │   ├── ReferenceScreen.kt          # Quick-reference lookup table
+    │   └── AboutScreen.kt              # Developer info & app version
     └── theme/
-        └── Theme.kt              # Material3 AMOLED dark theme & color tokens
+        └── Theme.kt                    # Material3 glassmorphism AMOLED dark theme
 ```
 
 - **`ConversionEngine.kt`**: Pure Kotlin logic for base conversions (reusable outside Android).
@@ -135,6 +146,7 @@ com.bitflip.app/
 
 | Version | Highlights |
 | :--- | :--- |
+| **4.0** | Scientific Calculator, History Activity Tracking, Glassmorphism UI, Categorized Dashboard |
 | **3.0** | Binary arithmetic operations (+, −, ×, ÷) with step-by-step working |
 | **2.0** | Fractional number support, merged Converter + Steps into single screen |
 | **1.0** | Initial release — integer base conversions with step-by-step working |
