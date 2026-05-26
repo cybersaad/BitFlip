@@ -24,7 +24,7 @@ object UpdateChecker {
         "https://api.github.com/repos/cybersaad/BitFlip/releases/latest"
 
     /**
-     * Compares [currentVersion] (e.g. "3.0") against the latest GitHub Release tag.
+     * Compares [currentVersion] (e.g. "4.0") against the latest GitHub Release tag.
      * Returns an [AppUpdate] when a newer release exists, or `null` otherwise.
      * Never throws — returns null on any network/parse error.
      */
@@ -61,7 +61,7 @@ object UpdateChecker {
     }
 
     /**
-     * Semantic version comparison: "3.1" > "3.0", "4.0" > "3.9", etc.
+     * Semantic version comparison: "4.1" > "4.0", "5.0" > "4.9", etc.
      */
     private fun isNewerVersion(remote: String, local: String): Boolean {
         val remoteParts = remote.split(".").map { it.toIntOrNull() ?: 0 }

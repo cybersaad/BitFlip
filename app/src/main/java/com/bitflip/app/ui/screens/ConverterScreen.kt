@@ -3,7 +3,6 @@ package com.bitflip.app.ui.screens
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +30,12 @@ import com.bitflip.app.Base
 import com.bitflip.app.ConversionEngine
 import com.bitflip.app.ConversionResult
 import com.bitflip.app.StepGroup
+import com.bitflip.app.HistoryItem
+import com.bitflip.app.HistoryManager
 import com.bitflip.app.ui.theme.*
+
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 
 @Composable
 fun ConverterScreen() {
@@ -40,6 +44,7 @@ fun ConverterScreen() {
     var result by remember { mutableStateOf<ConversionResult?>(null) }
     var steps by remember { mutableStateOf<List<StepGroup>>(emptyList()) }
     var isError by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     LaunchedEffect(input, selectedBase) {
         if (input.isEmpty()) {
@@ -49,6 +54,12 @@ fun ConverterScreen() {
             if (!isError) {
                 result = ConversionEngine.convert(input, selectedBase)
                 steps = ConversionEngine.buildSteps(input, selectedBase)
+
+                kotlinx.coroutines.delay(1500)
+                HistoryManager.addHistory(
+                    context, 
+                    HistoryItem("Converter", "Converted ${selectedBase.short} $input")
+                )
             } else {
                 result = null
                 steps = emptyList()
@@ -56,70 +67,71 @@ fun ConverterScreen() {
         }
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgPrimary)
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp)
+            .background(BgPrimary),
+        contentAlignment = Alignment.TopCenter
     ) {
-        Spacer(Modifier.height(8.dp))
-
-        // Header
-        Text(
-            "BitFlip",
-            fontSize = 26.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = AccentBlue,
-            letterSpacing = (-0.5).sp
-        )
-        Text(
-            "Decimal · Binary · Octal · Hex",
-            fontSize = 13.sp,
-            color = TextMuted,
-            modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)
-        )
-
-        // Base selector tabs
-        BaseSelector(selectedBase) { base ->
-            selectedBase = base
-            input = ""
-            result = null
-            steps = emptyList()
-            isError = false
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        // Input field
-        InputCard(
-            base = selectedBase,
-            input = input,
-            isError = isError,
-            onInputChange = { input = it.uppercase() }
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        // Result cards
-        AnimatedVisibility(visible = result != null) {
-            result?.let { res ->
-                ResultsSection(fromBase = selectedBase, result = res)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .widthIn(max = 600.dp),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Column {
+                    Text(
+                        "Converter",
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = AccentBlue,
+                        letterSpacing = (-0.5).sp
+                    )
+                    Text(
+                        "Decimal · Binary · Octal · Hex",
+                        fontSize = 13.sp,
+                        color = TextMuted,
+                        modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)
+                    )
+                }
             }
-        }
 
-        Spacer(Modifier.height(16.dp))
+            item {
+                BaseSelector(selectedBase) { base ->
+                    selectedBase = base
+                    input = ""
+                    result = null
+                    steps = emptyList()
+                    isError = false
+                }
+            }
 
-        AnimatedVisibility(visible = steps.isNotEmpty()) {
-            Column {
-                steps.forEach { group ->
+            item {
+                InputCard(
+                    base = selectedBase,
+                    input = input,
+                    isError = isError,
+                    onInputChange = { input = it.uppercase() }
+                )
+            }
+
+            if (result != null) {
+                item {
+                    ResultsSection(fromBase = selectedBase, result = result!!)
+                }
+            }
+
+            if (steps.isNotEmpty()) {
+                items(steps) { group ->
                     StepGroupCard(group)
-                    Spacer(Modifier.height(12.dp))
                 }
             }
         }
     }
 }
+// Replaced above
 
 @Composable
 fun BaseSelector(selected: Base, onSelect: (Base) -> Unit) {
@@ -157,11 +169,10 @@ fun BaseSelector(selected: Base, onSelect: (Base) -> Unit) {
 
 @Composable
 fun InputCard(base: Base, input: String, isError: Boolean, onInputChange: (String) -> Unit) {
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = BgSurface,
-        border = BorderStroke(0.5.dp, BorderColor),
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassCard(16)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -262,11 +273,10 @@ fun ResultCard(base: Base, value: String, accent: Color) {
         }
     }
 
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = BgSurface,
-        border = BorderStroke(0.5.dp, BorderColor),
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassCard(16)
     ) {
         Box {
             // Top accent line
@@ -328,11 +338,10 @@ fun ResultCard(base: Base, value: String, accent: Color) {
 fun StepGroupCard(group: StepGroup) {
     var expanded by remember(group.title) { mutableStateOf(true) }
 
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = BgSurface,
-        border = BorderStroke(0.5.dp, BorderColor),
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .glassCard(16)
     ) {
         Column {
             // Header
@@ -359,7 +368,7 @@ fun StepGroupCard(group: StepGroup) {
                 )
             }
 
-            AnimatedVisibility(visible = expanded) {
+            if (expanded) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

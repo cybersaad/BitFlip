@@ -10,15 +10,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material3.FilledTonalIconButton
@@ -46,6 +51,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bitflip.app.StepGroup
 import com.bitflip.app.StepLine
+import com.bitflip.app.HistoryItem
+import com.bitflip.app.HistoryManager
 import com.bitflip.app.ui.theme.AccentBlue
 import com.bitflip.app.ui.theme.AccentGreen
 import com.bitflip.app.ui.theme.AccentPink
@@ -57,6 +64,7 @@ import com.bitflip.app.ui.theme.BgSurface2
 import com.bitflip.app.ui.theme.BorderColor
 import com.bitflip.app.ui.theme.TextMuted
 import com.bitflip.app.ui.theme.TextPrimary
+import com.bitflip.app.ui.theme.glassCard
 import java.math.BigInteger
 
 enum class BinaryOp(val label: String, val symbol: String, val accent: Color) {
@@ -87,81 +95,100 @@ fun ArithmeticScreen() {
     val result = if (canCompute) computeBinaryOp(inputA, inputB, selectedOp) else null
     val steps = if (result != null) buildArithmeticSteps(inputA, inputB, selectedOp, result) else emptyList()
 
-    Column(
+    val context = LocalContext.current
+    LaunchedEffect(inputA, inputB, selectedOp) {
+        if (canCompute && result != null) {
+            kotlinx.coroutines.delay(1500)
+            val desc = "$inputA ${selectedOp.symbol} $inputB = ${result.value}" + 
+                if (result.remainder != null) " R ${result.remainder}" else ""
+            HistoryManager.addHistory(context, HistoryItem("Arithmetic", desc))
+        }
+    }
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgPrimary)
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp)
+            .background(BgPrimary),
+        contentAlignment = Alignment.TopCenter
     ) {
-        Spacer(Modifier.height(8.dp))
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .widthIn(max = 600.dp),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Column {
+                    Text(
+                        "Arithmetic",
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = AccentGreen,
+                        letterSpacing = (-0.5).sp
+                    )
+                    Text(
+                        "Binary operations",
+                        fontSize = 13.sp,
+                        color = TextMuted,
+                        modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)
+                    )
+                }
+            }
 
-        Text(
-            "Arithmetic",
-            fontSize = 26.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = AccentGreen,
-            letterSpacing = (-0.5).sp
-        )
-        Text(
-            "Binary operations",
-            fontSize = 13.sp,
-            color = TextMuted,
-            modifier = Modifier.padding(top = 2.dp, bottom = 16.dp)
-        )
+            item {
+                BinaryOpSelector(selectedOp) { selectedOp = it }
+            }
 
-        BinaryOpSelector(selectedOp) { selectedOp = it }
-
-        Spacer(Modifier.height(16.dp))
-
-        BinaryInputCard(
-            label = "A (binary)",
-            value = inputA,
-            isError = inputA.isNotEmpty() && !aValid,
-            onValueChange = { inputA = it }
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        BinaryInputCard(
-            label = "B (binary)",
-            value = inputB,
-            isError = inputB.isNotEmpty() && !bValid,
-            onValueChange = { inputB = it }
-        )
-
-        if (selectedOp == BinaryOp.DIV && bZero) {
-            Text(
-                "Division by zero is not allowed.",
-                fontSize = 12.sp,
-                color = AccentRed,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        if (result != null) {
-            BinaryResultCard(
-                title = "Result",
-                value = result.value,
-                accent = selectedOp.accent
-            )
-            if (selectedOp == BinaryOp.DIV) {
-                Spacer(Modifier.height(12.dp))
-                BinaryResultCard(
-                    title = "Remainder",
-                    value = result.remainder ?: "0",
-                    accent = AccentBlue
+            item {
+                BinaryInputCard(
+                    label = "A (binary)",
+                    value = inputA,
+                    isError = inputA.isNotEmpty() && !aValid,
+                    onValueChange = { inputA = it }
                 )
             }
-        }
 
-        if (steps.isNotEmpty()) {
-            Spacer(Modifier.height(16.dp))
-            steps.forEach { group ->
-                StepGroupCard(group)
-                Spacer(Modifier.height(12.dp))
+            item {
+                BinaryInputCard(
+                    label = "B (binary)",
+                    value = inputB,
+                    isError = inputB.isNotEmpty() && !bValid,
+                    onValueChange = { inputB = it }
+                )
+                if (selectedOp == BinaryOp.DIV && bZero) {
+                    Text(
+                        "Division by zero is not allowed.",
+                        fontSize = 12.sp,
+                        color = AccentRed,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+
+            if (result != null) {
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        BinaryResultCard(
+                            title = "Result",
+                            value = result.value,
+                            accent = selectedOp.accent
+                        )
+                        if (selectedOp == BinaryOp.DIV) {
+                            BinaryResultCard(
+                                title = "Remainder",
+                                value = result.remainder ?: "0",
+                                accent = AccentBlue
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (steps.isNotEmpty()) {
+                items(steps) { group ->
+                    StepGroupCard(group)
+                }
             }
         }
     }
@@ -175,20 +202,16 @@ fun BinaryOpSelector(selected: BinaryOp, onSelect: (BinaryOp) -> Unit) {
     ) {
         BinaryOp.entries.forEach { op ->
             val isSelected = op == selected
-            Surface(
-                shape = RoundedCornerShape(10.dp),
-                color = if (isSelected) op.accent else BgSurface,
+            Box(
                 modifier = Modifier
                     .weight(1f)
-                    .border(
-                        width = if (isSelected) 0.dp else 0.5.dp,
-                        color = if (isSelected) Color.Transparent else BorderColor,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .clickable { onSelect(op) }
+                    .glassCard(cornerRadius = 10, alpha = if (isSelected) 0.8f else 0.4f, borderColor = if (isSelected) op.accent else BorderColor)
+                    .background(if (isSelected) op.accent else Color.Transparent)
+                    .clickable { onSelect(op) },
+                contentAlignment = Alignment.Center
             ) {
                 Column(
-                    modifier = Modifier.padding(vertical = 10.dp),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -215,12 +238,10 @@ fun BinaryInputCard(
     isError: Boolean,
     onValueChange: (String) -> Unit
 ) {
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = BgSurface,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .border(0.5.dp, BorderColor, RoundedCornerShape(14.dp))
+            .glassCard(16)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(label, fontSize = 13.sp, color = TextMuted)
@@ -283,12 +304,10 @@ fun BinaryResultCard(title: String, value: String, accent: Color) {
         }
     }
 
-    Surface(
-        shape = RoundedCornerShape(14.dp),
-        color = BgSurface,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .border(0.5.dp, BorderColor, RoundedCornerShape(14.dp))
+            .glassCard(16)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),

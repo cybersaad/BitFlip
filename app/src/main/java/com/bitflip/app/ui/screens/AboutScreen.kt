@@ -11,13 +11,14 @@ import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,147 +26,171 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bitflip.app.R
-import com.bitflip.app.ui.theme.AccentBlue
-import com.bitflip.app.ui.theme.BgPrimary
-import com.bitflip.app.ui.theme.BgSurface
-import com.bitflip.app.ui.theme.BorderColor
-import com.bitflip.app.ui.theme.TextMuted
-import com.bitflip.app.ui.theme.TextPrimary
+import com.bitflip.app.ui.theme.*
 
 @Composable
 fun AboutScreen() {
     val uriHandler = LocalUriHandler.current
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgPrimary)
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .background(BgPrimary),
+        contentAlignment = Alignment.TopCenter
     ) {
-        // App Icon
-        Image(
-            painter = painterResource(id = R.drawable.app_icon),
-            contentDescription = "App Logo",
+        Column(
             modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .border(2.dp, AccentBlue, CircleShape)
-        )
-        
-        Spacer(modifier = Modifier.height(20.dp))
-        
-        // App Title
-        Text(
-            text = "BitFlip",
-            color = TextPrimary,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        // App Description
-        Text(
-            text = "Base conversions & binary arithmetic v3.0\n(Binary, Decimal, Octal, Hex)",
-            color = TextMuted,
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-        
-        Spacer(modifier = Modifier.height(32.dp))
-        
-        HorizontalDivider(color = BorderColor, thickness = 1.dp)
-        
-        Spacer(modifier = Modifier.height(32.dp))
-        
-        // Developer Info Card
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(BgSurface, RoundedCornerShape(16.dp))
-                .border(1.dp, BorderColor, RoundedCornerShape(16.dp))
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
+                .fillMaxHeight()
+                .widthIn(max = 600.dp)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Header
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+            ) {
                 Text(
-                    text = "Developer",
+                    "About",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = AccentPink,
+                    letterSpacing = (-0.5).sp
+                )
+                Text(
+                    "App Information",
+                    fontSize = 13.sp,
                     color = TextMuted,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium
+                    modifier = Modifier.padding(top = 2.dp)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Saad Khan",
-                    color = AccentBlue,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                // GitHub Button
-                Button(
-                    onClick = { uriHandler.openUri("https://github.com/cybersaad") },
-                    colors = ButtonDefaults.buttonColors(containerColor = BgPrimary),
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Code,
-                        contentDescription = "GitHub",
-                        tint = TextPrimary,
-                        modifier = Modifier.size(20.dp)
+            }
+
+            // App Identity Glass Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .glassCard(20)
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .background(
+                                Brush.radialGradient(
+                                    colors = listOf(AccentPink.copy(alpha = 0.2f), Color.Transparent)
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.app_icon),
+                            contentDescription = "App Logo",
+                            modifier = Modifier
+                                .size(80.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, AccentPink.copy(alpha = 0.5f), CircleShape)
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    Text(
+                        text = "BitFlip",
+                        color = TextPrimary,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 1.sp
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(text = "GitHub", color = TextPrimary, fontSize = 16.sp)
-                }
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
-                // LinkedIn Button
-                Button(
-                    onClick = { uriHandler.openUri("https://www.linkedin.com/in/saadkhan301/") },
-                    colors = ButtonDefaults.buttonColors(containerColor = BgPrimary),
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Person,
-                        contentDescription = "LinkedIn",
-                        tint = TextPrimary,
-                        modifier = Modifier.size(20.dp)
+                    
+                    Spacer(modifier = Modifier.height(4.dp))
+                    
+                    Text(
+                        text = "Version 4.0",
+                        color = AccentPink,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(text = "LinkedIn", color = TextPrimary, fontSize = 16.sp)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "The ultimate multi-tool for developers.\nConvert, calculate, and learn across bases.",
+                        color = TextMuted,
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 20.sp
+                    )
                 }
             }
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            // Developer Info Glass Card
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .glassCard(20)
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "DESIGNED & DEVELOPED BY",
+                        color = TextMuted,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.5.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Saad Khan",
+                        color = TextPrimary,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    // Social Buttons Row
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(
+                            onClick = { uriHandler.openUri("https://github.com/cybersaad") },
+                            colors = ButtonDefaults.buttonColors(containerColor = AccentPink.copy(alpha = 0.1f)),
+                            modifier = Modifier.weight(1f).height(50.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            Icon(Icons.Outlined.Code, contentDescription = "GitHub", tint = AccentPink, modifier = Modifier.size(20.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "GitHub", color = AccentPink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        }
+                        
+                        Button(
+                            onClick = { uriHandler.openUri("https://www.linkedin.com/in/saadkhan301/") },
+                            colors = ButtonDefaults.buttonColors(containerColor = AccentBlue.copy(alpha = 0.1f)),
+                            modifier = Modifier.weight(1f).height(50.dp),
+                            shape = RoundedCornerShape(14.dp)
+                        ) {
+                            Icon(Icons.Outlined.Person, contentDescription = "LinkedIn", tint = AccentBlue, modifier = Modifier.size(20.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "LinkedIn", color = AccentBlue, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Text(
+                text = "© 2026 All Rights Reserved",
+                color = TextMuted.copy(alpha = 0.5f),
+                fontSize = 12.sp,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
         }
-        
-        Spacer(modifier = Modifier.height(32.dp))
-        
-        HorizontalDivider(color = BorderColor, thickness = 1.dp)
-        
-        Spacer(modifier = Modifier.height(32.dp))
-        
-        // Version and Copyright
-        Text(
-            text = "Version 3.0",
-            color = TextPrimary,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
-        )
-        
-        Spacer(modifier = Modifier.height(4.dp))
-        
-        Text(
-            text = "© 2026",
-            color = TextMuted,
-            fontSize = 14.sp
-        )
     }
 }
 
