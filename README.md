@@ -24,7 +24,9 @@
 
 BitFlip v4.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases, perform binary arithmetic, and solve complex math equations with a full scientific calculator — all with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
 
-<img width="300" height="590" alt="Screenshot_20260524_131530 - Copy" src="https://github.com/user-attachments/assets/46956680-75c3-4214-bc3c-52bdcb704aae" />
+<img width="379" height="788" alt="image" src="https://github.com/user-attachments/assets/dcfe4934-5a92-4a5a-a535-3f73a9adc92c" />
+
+
 
 </div>
 
