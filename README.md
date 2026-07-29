@@ -22,7 +22,10 @@
 ![Release](https://img.shields.io/badge/Release-v4.0-161B22?style=for-the-badge&logo=github&logoColor=white)
 
 
-BitFlip v4.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases, perform binary arithmetic, and solve complex math equations with a full scientific calculator — all with precision and clarity. Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, but also the logical steps taken to reach it.
+BitFlip v4.0 is a modern, fast, and completely offline Android application designed to convert numbers between different bases, 
+perform binary arithmetic, and solve complex math equations with a full scientific calculator — all with precision and clarity. 
+Built with **Kotlin** and **Jetpack Compose**, this app provides not just the final result, 
+but also the logical steps taken to reach it.
 
 <img width="379" height="788" alt="image" src="https://github.com/user-attachments/assets/dcfe4934-5a92-4a5a-a535-3f73a9adc92c" />
 
