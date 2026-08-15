@@ -7,7 +7,6 @@
   />
 </p>
 
-
 <h1 align="center">BitFlip</h1>
 
 <p align="center">
